@@ -108,4 +108,18 @@ class RoutesGetTest {
                 .body(`is`(""))
         }
     }
+
+    @Test
+    fun `test allocations`() {
+        (-150..150).forEach {
+            given()
+                .`when`()
+                .queryParam("allocation", it)
+                .queryParam("delay", "1")
+                .get("/")
+                .then()
+                .statusCode(200)
+                .body(`is`(""))
+        }
+    }
 }

@@ -2,6 +2,7 @@ package io.github.heubeck
 
 import io.quarkus.logging.Log
 import java.lang.Math.random
+import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import javax.ws.rs.GET
 import javax.ws.rs.POST
@@ -29,9 +30,10 @@ class Routes(
         @PathParam("path") path: String,
         @QueryParam("status") status: String?,
         @QueryParam("delay") delay: String?,
-        @QueryParam("load") load: String?
+        @QueryParam("load") load: String?,
+        @QueryParam("allocation") allocation: String?,
     ): Response {
-        Actor.act(delay, load)
+        Actor.act(delay, load, allocation)
         return Response
             .status(status(status))
             .entity(echoValue.trim())
@@ -45,10 +47,11 @@ class Routes(
         @QueryParam("status") status: String?,
         @QueryParam("delay") delay: String?,
         @QueryParam("load") load: String?,
+        @QueryParam("allocation") allocation: String?,
         body: String
     ): Response {
         Log.info("POST '$path':\n$body")
-        Actor.act(delay, load)
+        Actor.act(delay, load, allocation)
         return Response
             .status(status(status))
             .build()
@@ -62,11 +65,13 @@ sealed interface Actor {
     suspend fun act()
 
     companion object {
-        suspend fun act(delay: String?, load: String?) {
+        suspend fun act(delay: String?, load: String?, allocation: String?) {
             val delay = DelayParser(delay)
             val loadWeight = load?.trim()?.toLongOrNull()?.takeIf { it > 0 }
+            val memWeight = allocation?.trim()?.toLongOrNull()?.takeIf { it > 0 }
             when {
                 loadWeight != null && delay.isDelayed() -> LoadProducer(delay.getDelay(), loadWeight)
+                memWeight != null && delay.isDelayed() -> MemoryAllocator(delay.getDelay(), memWeight)
                 delay.isDelayed() -> Waiter(delay.getDelay())
                 else -> Noop
             }.act()
@@ -96,6 +101,25 @@ class LoadProducer(private val durationMs: Long, private val weight: Long) : Act
                     Log.trace(compute(normalizedWeight, endAt))
                 }
             }
+        }
+    }
+}
+
+class MemoryAllocator(private val durationMs: Long, private val weight: Long) : Actor {
+
+    override suspend fun act() {
+        val endAt = System.currentTimeMillis() + durationMs
+        val normalizedWeight = if (weight > 100) 100 else weight
+        withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+            val sb = StringBuilder()
+            val throttle = AtomicLong()
+            while (System.currentTimeMillis() < endAt) {
+                if (weight < 100 && throttle.incrementAndGet() % normalizedWeight == 0L) {
+                    delay(1)
+                }
+                sb.append(UUID.randomUUID().toString())
+            }
+            Log.trace(sb.toString())
         }
     }
 }

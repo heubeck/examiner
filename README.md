@@ -18,3 +18,4 @@ The following query parameter are supported:
 * `delay`: Milliseconds to delay the response:
   * a single number e.g. "1337" for the given delay of milliseconds
   * a range e.g. "42..667" for a random delay of milliseconds
+* `load`: Stress the CPU at a level from 1 (some load) to 100 (high load)

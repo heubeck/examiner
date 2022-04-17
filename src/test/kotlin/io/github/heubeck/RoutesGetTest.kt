@@ -94,4 +94,18 @@ class RoutesGetTest {
                 .body(`is`(""))
         }
     }
+
+    @Test
+    fun `test load`() {
+        (-150..150).forEach {
+            given()
+                .`when`()
+                .queryParam("load", it)
+                .queryParam("delay", "1")
+                .get("/")
+                .then()
+                .statusCode(200)
+                .body(`is`(""))
+        }
+    }
 }

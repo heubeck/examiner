@@ -1,4 +1,4 @@
-# Examiner
+# 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗
 
 Project to experiment with http request scenarios like service-meshs or deployment-strategies.
 

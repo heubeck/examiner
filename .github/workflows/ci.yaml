@@ -47,3 +47,6 @@ jobs:
               run: |
                   docker login -u="$QUAY_USER" -p="$QUAY_PASSWORD" quay.io
                   docker push ${{ env.image_name }}:${{ env.VERSION }}
+
+                  docker tag ${{ env.image_name }}:${{ env.VERSION }} ${{ env.image_name }}:latest
+                  docker push ${{ env.image_name }}:latest

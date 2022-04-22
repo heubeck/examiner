@@ -24,7 +24,7 @@ jobs:
 
             - name: Application Build and Test
               run: |
-                  mvn ${{ env.mvn_parameter }} clean verify -Pnative
+                  mvn ${{ env.mvn_parameter }} clean verify -Pnative,dependency-scan
                   VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
                   echo VERSION="$VERSION" >> $GITHUB_ENV
 

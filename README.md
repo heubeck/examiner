@@ -1,5 +1,7 @@
 # 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗
 
+![Build&Test](https://github.com/heubeck/examiner/actions/workflows/ci.yaml/badge.svg)
+
 Project to experiment with http request scenarios like service-meshs or deployment-strategies.
 
 ## Respond

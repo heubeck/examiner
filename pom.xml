@@ -3,9 +3,19 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
     <groupId>io.github.heubeck</groupId>
     <artifactId>examiner</artifactId>
     <version>1.2.2</version>
+    
     <properties>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <failsafe.useModulePath>false</failsafe.useModulePath>
@@ -22,6 +32,7 @@
         <quarkus.native.builder-image>quay.io/quarkus/ubi-quarkus-native-image:22.0-java17
         </quarkus.native.builder-image>
     </properties>
+    
     <dependencyManagement>
         <dependencies>
             <dependency>

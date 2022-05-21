@@ -22,3 +22,9 @@ The following query parameter are supported:
   * a range e.g. "42..667" for a random delay of milliseconds
 * `load`: Stress the CPU at a level from 1 (some load) to 100 (high load) for the given `delay`
 * `allocation`: Create memory pressure at a level from 1 (slow rate) to 100 (get what's there) by running string allocations over the given `delay`.
+
+## Silence! I kill you!
+
+The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 dies when called with a DELETE request on the path `/poison-pill`.
+The exit code can be configured by a query parameter `exit`: `DELETE /poison-pill?exit=1`, default is exit code `0` (in words: zero).
+Only regular supported query parameter for this method is the `delay` to wait before dying.

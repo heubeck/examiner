@@ -28,6 +28,9 @@ import javax.ws.rs.Produces
 import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
+import org.jboss.resteasy.reactive.Cache
+import org.jboss.resteasy.reactive.ResponseHeader
+import org.jboss.resteasy.reactive.ResponseStatus
 
 const val GET_BASE_PATH = "examine"
 
@@ -42,8 +45,14 @@ class Routes(
     }
 
     @GET
+    @ResponseStatus(301)
+    @ResponseHeader(name = "location", value = [GET_BASE_PATH])
+    fun noop() = Unit
+
+    @GET
     @Path("favicon.ico")
     @Produces("image/x-icon")
+    @Cache(maxAge = Int.MAX_VALUE)
     fun favicon() = favicon
 
     @GET

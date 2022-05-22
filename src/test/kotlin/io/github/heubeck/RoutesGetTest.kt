@@ -26,15 +26,15 @@ class RoutesGetTest {
     @Test
     fun `test different paths without further parameter`() {
         listOf("", "/", "/path", "/path/path", "/path/path/path")
-            .map { "/$GET_BASE_PATH$it"}
+            .map { "/$GET_BASE_PATH$it" }
             .forEach {
-            given()
-                .`when`()
-                .get(it)
-                .then()
-                .statusCode(200)
-                .body(`is`(""))
-        }
+                given()
+                    .`when`()
+                    .get(it)
+                    .then()
+                    .statusCode(200)
+                    .body(`is`(""))
+            }
     }
 
     @Test
@@ -137,5 +137,16 @@ class RoutesGetTest {
                 .statusCode(200)
                 .body(`is`(""))
         }
+    }
+
+    @Test
+    fun `test root redirect`() {
+        given()
+            .`when`()
+            .redirects().follow(false)
+            .get("/")
+            .then()
+            .statusCode(301)
+            .header("location", GET_BASE_PATH)
     }
 }

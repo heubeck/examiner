@@ -18,11 +18,13 @@ import io.micrometer.core.annotation.Counted
 import io.micrometer.core.annotation.Timed
 import io.quarkus.logging.Log
 import io.quarkus.runtime.Quarkus
+import java.util.Base64
 import javax.ws.rs.DELETE
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
+import javax.ws.rs.Produces
 import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
@@ -31,8 +33,18 @@ const val GET_BASE_PATH = "examine"
 
 @Path("/")
 class Routes(
-    @ConfigProperty(name = "echo-value") val echoValue: String
+    @ConfigProperty(name = "echo-value") val echoValue: String,
+    @ConfigProperty(name = "favicon-base64") val faviconBase64: String
 ) {
+
+    private val favicon by lazy {
+        Base64.getDecoder().decode(faviconBase64)
+    }
+
+    @GET
+    @Path("favicon.ico")
+    @Produces("image/x-icon")
+    fun favicon() = favicon
 
     @GET
     @Path(GET_BASE_PATH)

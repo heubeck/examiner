@@ -27,13 +27,26 @@ import javax.ws.rs.QueryParam
 import javax.ws.rs.core.Response
 import org.eclipse.microprofile.config.inject.ConfigProperty
 
+const val GET_BASE_PATH = "examine"
+
 @Path("/")
 class Routes(
     @ConfigProperty(name = "echo-value") val echoValue: String
 ) {
 
     @GET
-    @Path("{path: .*}")
+    @Path(GET_BASE_PATH)
+    @Timed
+    @Counted
+    suspend fun get(
+        @QueryParam("status") status: String?,
+        @QueryParam("delay") delay: String?,
+        @QueryParam("load") load: String?,
+        @QueryParam("allocation") allocation: String?,
+    ) = get("", status, delay, load, allocation)
+
+    @GET
+    @Path("$GET_BASE_PATH/{path: .*}")
     @Timed
     @Counted
     suspend fun get(

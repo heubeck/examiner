@@ -25,7 +25,9 @@ class RoutesGetTest {
 
     @Test
     fun `test different paths without further parameter`() {
-        listOf("/", "/path", "/path/path", "/path/path/path").forEach {
+        listOf("", "/", "/path", "/path/path", "/path/path/path")
+            .map { "/$GET_BASE_PATH$it"}
+            .forEach {
             given()
                 .`when`()
                 .get(it)
@@ -41,7 +43,7 @@ class RoutesGetTest {
             given()
                 .`when`()
                 .queryParam("status", it)
-                .get("/")
+                .get("/$GET_BASE_PATH")
                 .then()
                 .statusCode(it)
                 .body(`is`(""))
@@ -55,7 +57,7 @@ class RoutesGetTest {
                 given()
                     .`when`()
                     .queryParam("delay", it)
-                    .get("/")
+                    .get("/$GET_BASE_PATH")
                     .then()
                     .body(`is`(""))
             }
@@ -71,7 +73,7 @@ class RoutesGetTest {
                 given()
                     .`when`()
                     .queryParam("delay", "$min$dots$max")
-                    .get("/")
+                    .get("/$GET_BASE_PATH")
                     .then()
                     .body(`is`(""))
             }
@@ -87,7 +89,7 @@ class RoutesGetTest {
                 given()
                     .`when`()
                     .queryParam("delay", it)
-                    .get("/")
+                    .get("/$GET_BASE_PATH")
                     .then()
                     .statusCode(200)
                     .body(`is`(""))
@@ -102,7 +104,7 @@ class RoutesGetTest {
             given()
                 .`when`()
                 .queryParam("status", it)
-                .get("/")
+                .get("/$GET_BASE_PATH")
                 .then()
                 .statusCode(200)
                 .body(`is`(""))
@@ -116,7 +118,7 @@ class RoutesGetTest {
                 .`when`()
                 .queryParam("load", it)
                 .queryParam("delay", "1")
-                .get("/")
+                .get("/$GET_BASE_PATH")
                 .then()
                 .statusCode(200)
                 .body(`is`(""))
@@ -130,7 +132,7 @@ class RoutesGetTest {
                 .`when`()
                 .queryParam("allocation", it)
                 .queryParam("delay", "1")
-                .get("/")
+                .get("/$GET_BASE_PATH")
                 .then()
                 .statusCode(200)
                 .body(`is`(""))

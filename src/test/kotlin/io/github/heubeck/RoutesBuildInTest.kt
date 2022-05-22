@@ -15,27 +15,22 @@
 package io.github.heubeck
 
 import io.quarkus.test.junit.QuarkusTest
-import io.quarkus.test.junit.QuarkusTestProfile
-import io.quarkus.test.junit.TestProfile
 import io.restassured.RestAssured.given
-import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.jupiter.api.Test
 
-class RoutesValueOverride : QuarkusTestProfile {
-    override fun getConfigOverrides() = mutableMapOf("echo-value" to "this is just a test")
-}
-
 @QuarkusTest
-@TestProfile(RoutesValueOverride::class)
-class RoutesGetValueTest {
+class RoutesBuildInTest {
 
     @Test
-    fun `test configured testValue`() {
-        given()
-            .`when`()
-            .get("/$GET_BASE_PATH")
-            .then()
-            .body(`is`("this is just a test"))
+    fun `test all build in paths are functional`() {
+        listOf("/metrics", "/.well-known/live", "/.well-known/ready").forEach {
+            given()
+                .`when`()
+                .get(it)
+                .then()
+                .statusCode(200)
+                .body(notNullValue())
+        }
     }
-
 }

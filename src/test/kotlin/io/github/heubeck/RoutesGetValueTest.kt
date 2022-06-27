@@ -18,11 +18,17 @@ import io.quarkus.test.junit.QuarkusTest
 import io.quarkus.test.junit.QuarkusTestProfile
 import io.quarkus.test.junit.TestProfile
 import io.restassured.RestAssured.given
+import kotlin.system.measureTimeMillis
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.jupiter.api.Test
 
 class RoutesValueOverride : QuarkusTestProfile {
-    override fun getConfigOverrides() = mutableMapOf("echo-value" to "this is just a test")
+    override fun getConfigOverrides() =
+        mutableMapOf(
+            "echo-value" to "this is just a test",
+            "server-error-rate" to "100",
+            "request-delay" to "500..1000"
+        )
 }
 
 @QuarkusTest
@@ -31,11 +37,15 @@ class RoutesGetValueTest {
 
     @Test
     fun `test configured testValue`() {
-        given()
-            .`when`()
-            .get("/$GET_BASE_PATH")
-            .then()
-            .body(`is`("this is just a test"))
+        val delay = measureTimeMillis {
+            given()
+                .`when`()
+                .get("/$GET_BASE_PATH")
+                .then()
+                .statusCode(500)
+                .body(`is`("this is just a test"))
+        }
+        assert(delay > 500) {"Configured request delay not respected"}
     }
 
 }

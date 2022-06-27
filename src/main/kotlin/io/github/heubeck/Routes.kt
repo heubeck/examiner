@@ -18,6 +18,7 @@ import io.micrometer.core.annotation.Counted
 import io.micrometer.core.annotation.Timed
 import io.quarkus.logging.Log
 import io.quarkus.runtime.Quarkus
+import java.lang.Math.random
 import java.util.Base64
 import javax.ws.rs.DELETE
 import javax.ws.rs.GET
@@ -37,6 +38,8 @@ const val GET_BASE_PATH = "examine"
 @Path("/")
 class Routes(
     @ConfigProperty(name = "echo-value") val echoValue: String,
+    @ConfigProperty(name = "server-error-rate", defaultValue = "0") val defaultServerErrorRate: Int,
+    @ConfigProperty(name = "request-delay", defaultValue = "") val defaultRequestDelay: String,
     @ConfigProperty(name = "favicon-base64") val faviconBase64: String
 ) {
 
@@ -64,7 +67,7 @@ class Routes(
         @QueryParam("delay") delay: String?,
         @QueryParam("load") load: String?,
         @QueryParam("allocation") allocation: String?,
-    ) = get("", status, delay, load, allocation)
+    ) = get("", status, delay.or(defaultRequestDelay), load, allocation)
 
     @GET
     @Path("$GET_BASE_PATH/{path: .*}")
@@ -77,7 +80,7 @@ class Routes(
         @QueryParam("load") load: String?,
         @QueryParam("allocation") allocation: String?,
     ): Response {
-        Actor.act(delay, load, allocation)
+        Actor.act(delay.or(defaultRequestDelay), load, allocation)
         return Response
             .status(status(status))
             .entity(echoValue.trim())
@@ -97,7 +100,7 @@ class Routes(
         body: String
     ): Response {
         Log.info("POST '$path':\n$body")
-        Actor.act(delay, load, allocation)
+        Actor.act(delay.or(defaultRequestDelay), load, allocation)
         return Response
             .status(status(status))
             .build()
@@ -109,12 +112,22 @@ class Routes(
         @QueryParam("delay") delay: String?,
         @QueryParam("exit") exit: String?
     ) {
-        DelayParser(delay).takeIf { it.isDelayed() }?.run {
+        DelayParser(delay.or(defaultRequestDelay)).takeIf { it.isDelayed() }?.run {
             Waiter(getDelay()).act()
         }
         Quarkus.asyncExit(exit?.trim()?.toIntOrNull() ?: 0)
     }
 
+    private fun <T> T?.or(defaultValue: T?): T? =
+        this ?: defaultValue
+
     private fun status(status: String?): Int =
-        status?.toIntOrNull()?.takeIf { it in 200..599 } ?: 200
+        // provided status has precedence
+        status?.toIntOrNull()?.takeIf { it in 200..599 }
+        // configured error rate as fallback
+            ?: if (random() * 100 <= defaultServerErrorRate) {
+                500
+            } else {
+                200
+            }
 }

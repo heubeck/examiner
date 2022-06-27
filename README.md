@@ -12,9 +12,17 @@ The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 responds to every GET request at or below t
 
 The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 logs every POST request on arbitrary paths to its log output.
 
+## Config
+
+There are some environment variables to configure default behavior:
+
+* `ECHO_VALUE`: Text value to be responded on GET `/examine` requests
+* `SERVER_ERROR_RATE`: Int value as probability in percent (0 - 100) that HTTP 500 codes are responded.
+* `REQUEST_DELAY`: Default millisecond delay for every request.
+
 ## Parameter
 
-The following query parameter are supported:
+The following query parameter are supported and have precedence over the default configuration:
 
 * `status`: Status value used for the response, range: [200-600[
 * `delay`: Milliseconds to delay the response:

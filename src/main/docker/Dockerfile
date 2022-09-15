@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM quay.io/quarkus/quarkus-distroless-image:1.0
+FROM quay.io/quarkus/quarkus-distroless-image:2.0
 COPY target/*-runner /examiner
 
 EXPOSE 8080

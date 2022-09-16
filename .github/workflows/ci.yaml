@@ -31,22 +31,22 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v2
 
+            - name: Login to quay.io
+              uses: docker/login-action@v2
+              if: github.ref == 'refs/heads/main'
+              with:
+                  registry: quay.io
+                  username: ${{ secrets.QUAY_USER }}
+                  password: ${{ secrets.QUAY_PASSWORD }}
+
             - name: Docker build
               uses: docker/build-push-action@v3
               with:
                   context: .
                   file: src/main/docker/Dockerfile
-                  tags: ${{ env.image_name }}:${{ env.VERSION }}
-                  load: true
-
-            - name: Docker push
-              if: github.ref == 'refs/heads/main'
-              env:
-                  QUAY_USER: ${{ secrets.QUAY_USER }}
-                  QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
-              run: |
-                  docker login -u="$QUAY_USER" -p="$QUAY_PASSWORD" quay.io
-                  docker push ${{ env.image_name }}:${{ env.VERSION }}
-
-                  docker tag ${{ env.image_name }}:${{ env.VERSION }} ${{ env.image_name }}:latest
-                  docker push ${{ env.image_name }}:latest
+                  tags: |
+                      ${{ env.image_name }}:${{ env.VERSION }}
+                      ${{ env.image_name }}:latest
+                  platforms: linux/amd64,linux/arm64
+                  load: ${{ github.ref != 'refs/heads/main' }}
+                  push: ${{ github.ref == 'refs/heads/main' }}

@@ -28,18 +28,19 @@ import org.jetbrains.kotlin.util.suffixIfNot
 
 @Provider
 class Logger(
-    @ConfigProperty(name = "log.methods") methods: List<String>,
-    @ConfigProperty(name = "log.headers") headers: List<String>,
+    @ConfigProperty(name = "log-methods") methods: String,
+    @ConfigProperty(name = "log-headers") headers: String,
     @Context val request: HttpServerRequest
 ) : ContainerRequestFilter {
 
-    val headers = headers.map { Regex(it.trim()) }
-    val methods = methods.map { it.trim() }
+    val headers = headers.split(',').map { Regex(it.trim()) }
+    val methods = methods.split(',').map { it.trim() }
     val bodyLogMethods = listOf("POST", "PUT", "PATCH")
 
     override fun filter(ctx: ContainerRequestContext) {
         val method = ctx.method
         if (method in methods) {
+            val source = request.remoteAddress()
             val path = ctx.uriInfo.requestUri
             val headerValues = ctx.headers
                 .filterKeys { name -> headers.any { name.matches(it) } }
@@ -52,7 +53,7 @@ class Logger(
 
             fun logIt(body: String = "") {
                 val colon = if (headerValues.isNotBlank() || body.isNotBlank()) ":" else ""
-                Log.infof("|%n%s %s %s%s%s", method, path, colon, headerValues, body)
+                Log.infof("|%n%s %s from %s%s%s%s", method, path, source, colon, headerValues, body)
             }
 
             if (method in bodyLogMethods) {

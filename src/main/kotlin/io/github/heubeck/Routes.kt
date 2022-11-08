@@ -16,7 +16,6 @@ package io.github.heubeck
 
 import io.micrometer.core.annotation.Counted
 import io.micrometer.core.annotation.Timed
-import io.quarkus.logging.Log
 import io.quarkus.runtime.Quarkus
 import java.lang.Math.random
 import java.util.Base64
@@ -37,6 +36,7 @@ const val GET_BASE_PATH = "examine"
 
 @Path("/")
 class Routes(
+    val logger: Logger,
     @ConfigProperty(name = "echo-value") val echoValue: String,
     @ConfigProperty(name = "server-error-rate", defaultValue = "0") val defaultServerErrorRate: Int,
     @ConfigProperty(name = "request-delay", defaultValue = "") val defaultRequestDelay: String,
@@ -66,7 +66,7 @@ class Routes(
         @QueryParam("status") status: String?,
         @QueryParam("delay") delay: String?,
         @QueryParam("load") load: String?,
-        @QueryParam("allocation") allocation: String?,
+        @QueryParam("allocation") allocation: String?
     ) = get("", status, delay.or(defaultRequestDelay), load, allocation)
 
     @GET
@@ -78,7 +78,7 @@ class Routes(
         @QueryParam("status") status: String?,
         @QueryParam("delay") delay: String?,
         @QueryParam("load") load: String?,
-        @QueryParam("allocation") allocation: String?,
+        @QueryParam("allocation") allocation: String?
     ): Response {
         Actor.act(delay.or(defaultRequestDelay), load, allocation)
         return Response
@@ -99,7 +99,6 @@ class Routes(
         @QueryParam("allocation") allocation: String?,
         body: String
     ): Response {
-        Log.info("POST '$path':\n$body")
         Actor.act(delay.or(defaultRequestDelay), load, allocation)
         return Response
             .status(status(status))

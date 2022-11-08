@@ -29,6 +29,7 @@ class RoutesPostTest {
             given()
                 .`when`()
                 .body(UUID.randomUUID().toString())
+                .header("X-Forwarded-For", "me")
                 .post(it)
                 .then()
                 .statusCode(200)

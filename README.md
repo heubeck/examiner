@@ -10,7 +10,10 @@ The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 responds to every GET request at or below t
 
 ## Log
 
-The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 logs every POST request on arbitrary paths to its log output.
+The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 logs every POST request on arbitrary paths to its log output by default.
+The logging can be customized using the following env:
+* `LOG_METHODS`: Comma separated list of http methods to be logged
+* `LOG_HEADERS`: Comma separated list of regex values for http header names to be logged, defaulting to `X-.*`
 
 ## Config
 

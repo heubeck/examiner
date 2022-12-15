@@ -47,6 +47,5 @@ jobs:
                   tags: |
                       ${{ env.image_name }}:${{ env.VERSION }}
                       ${{ env.image_name }}:latest
-                  platforms: linux/amd64,linux/arm64
                   load: ${{ github.ref != 'refs/heads/main' }}
                   push: ${{ github.ref == 'refs/heads/main' }}

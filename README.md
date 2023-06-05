@@ -4,6 +4,8 @@
 
 Project to experiment with http request scenarios like service-meshs or deployment-strategies.
 
+Container images are available from [quay.io/heubeck/examiner](https://quay.io/repository/heubeck/examiner?tab=tags).
+
 ## Respond
 
 The 𝕰𝖝𝖆𝖒𝖎𝖓𝖊𝖗 responds to every GET request at or below the `/examine` path with an optional, preconfigured value, set via the `ECHO_VALUE` environment variable.

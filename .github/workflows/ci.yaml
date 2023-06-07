@@ -105,18 +105,15 @@ jobs:
                   username: ${{ secrets.QUAY_USER }}
                   password: ${{ secrets.QUAY_PASSWORD }}
 
-            - name: Build manifest for ${{ env.VERSION }}
+            - name: Build manifest for ${{ env.VERSION }} and latest
               run: |
-                  docker buildx imagetools create -t "${image_name}:${VERSION}" \
-                  "${image_name}:${VERSION}"-amd64 \
-                  "${image_name}:${VERSION}"-arm64
+                  sha_amd64=$(docker manifest inspect "${image_name}:${VERSION}-amd64" | jq -r '.manifests[] | select(.platform.architecture == "amd64" and .platform.os == "linux") | .digest')
+                  sha_arm64=$(docker manifest inspect "${image_name}:${VERSION}-arm64" | jq -r '.manifests[] | select(.platform.architecture == "arm64" and .platform.os == "linux") | .digest')
 
-                  docker buildx imagetools inspect "${image_name}:${VERSION}"
+                  for v in ${VERSION} latest; do
+                    docker manifest create "${image_name}:${v}" \
+                    "${image_name}@${sha_amd64}" \
+                    "${image_name}@${sha_arm64}"
 
-            - name: Build manifest for latest tag
-              run: |
-                  docker buildx imagetools create -t "${image_name}:latest" \
-                  "${image_name}:${VERSION}"-amd64 \
-                  "${image_name}:${VERSION}"-arm64
-
-                  docker buildx imagetools inspect "${image_name}:latest"
+                    docker manifest push "${image_name}:${v}"
+                  done

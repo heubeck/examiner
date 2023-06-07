@@ -4,7 +4,7 @@
 
 Project to experiment with http request scenarios like service-meshs or deployment-strategies.
 
-Container images are available from [quay.io/heubeck/examiner](https://quay.io/repository/heubeck/examiner?tab=tags).
+Container images for linux/amd64 and linux/arm64 are available from [quay.io/heubeck/examiner](https://quay.io/repository/heubeck/examiner?tab=tags).
 
 ## Respond
 

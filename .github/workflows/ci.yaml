@@ -76,7 +76,7 @@ jobs:
                   load: ${{ github.ref != 'refs/heads/main' }}
                   push: ${{ github.ref == 'refs/heads/main' }}
 
-    docker:
+    release:
         runs-on: ubuntu-latest
         needs: ci
         if: github.ref == 'refs/heads/main'
@@ -114,3 +114,11 @@ jobs:
 
                       podman manifest push "${image_name}:${v}" "docker://${image_name}:${v}"
                   done
+
+            - name: Create Release
+              uses: actions/create-release@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  tag_name: ${{ env.VERSION }}
+                  release_name: v${{ env.VERSION }}

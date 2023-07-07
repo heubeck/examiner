@@ -17,12 +17,12 @@
 
     <groupId>io.github.heubeck</groupId>
     <artifactId>examiner</artifactId>
-    <version>1.11.6</version>
+    <version>1.11.7</version>
 
     <properties>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
         <failsafe.useModulePath>false</failsafe.useModulePath>
-        <kotlin.version>1.8.22</kotlin.version>
+        <kotlin.version>1.9.0</kotlin.version>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

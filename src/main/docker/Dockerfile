@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM --platform=$TARGETPLATFORM quay.io/quarkus/quarkus-distroless-image:2.0
+FROM --platform=$TARGETPLATFORM quay.io/quarkus/quarkus-distroless-image:2.0-2023-07-16
 COPY target/*-runner /examiner
 
 EXPOSE 8080

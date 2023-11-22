@@ -30,7 +30,7 @@
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.5.2</quarkus.platform.version>
         <surefire-plugin.version>3.2.2</surefire-plugin.version>
-        <maven-dependency-check-plugin.version>8.4.3</maven-dependency-check-plugin.version>
+        <maven-dependency-check-plugin.version>9.0.0</maven-dependency-check-plugin.version>
         <quarkus.native.container-build>true</quarkus.native.container-build>
     </properties>
 

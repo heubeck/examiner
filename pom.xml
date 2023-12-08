@@ -17,7 +17,7 @@
 
     <groupId>io.github.heubeck</groupId>
     <artifactId>examiner</artifactId>
-    <version>1.11.24</version>
+    <version>1.11.25</version>
 
     <properties>
         <compiler-plugin.version>3.11.0</compiler-plugin.version>
@@ -221,6 +221,9 @@
                             <skipProvidedScope>true</skipProvidedScope>
                             <skipRuntimeScope>true</skipRuntimeScope>
                             <skipTestScope>true</skipTestScope>
+                            <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+                            <nvdMaxRetryCount>25</nvdMaxRetryCount>
+                            <nvdApiDelay>500</nvdApiDelay>
                         </configuration>
                         <executions>
                             <execution>

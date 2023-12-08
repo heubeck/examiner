@@ -45,6 +45,7 @@ jobs:
                 QUARKUS_NATIVE_CONTAINER_RUNTIME_OPTIONS: '--platform=linux/${{ matrix.arch }}'
                 QUARKUS_BUILDPACK_NATIVE_BUILDER_IMAGE: '${{ env.builder_image }}:${{ matrix.builder_image_tag }}'
                 QUARKUS_DOCKER_BUILDX_PLATFORM: 'linux/${{ matrix.arch }}'
+                NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
               run: |
                   skip_tests=""
                   # cannot exec arm binary during native tests on non-arm64 platform.

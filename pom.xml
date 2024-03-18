@@ -20,7 +20,7 @@
     <version>1.12.10</version>
 
     <properties>
-        <compiler-plugin.version>3.12.1</compiler-plugin.version>
+        <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <failsafe.useModulePath>false</failsafe.useModulePath>
         <kotlin.version>1.9.22</kotlin.version>
         <maven.compiler.release>21</maven.compiler.release>

@@ -24,6 +24,7 @@ There are some environment variables to configure default behavior:
 * `ECHO_VALUE`: Text value to be responded on GET `/examine` requests
 * `SERVER_ERROR_RATE`: Int value as probability in percent (0 - 100) that HTTP 500 codes are responded.
 * `REQUEST_DELAY`: Default millisecond delay for every request.
+* `HTTP_PORT`: Port to serve on, default: 8080
 
 ## Parameter
 

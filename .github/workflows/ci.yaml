@@ -12,9 +12,9 @@ jobs:
             matrix:
                 include:
                     - arch: amd64
-                      builder_image_tag: 24.1.0.0-Final-java23-amd64
+                      builder_image_tag: 24.1.1.0-Final-java23-amd64
                     - arch: arm64
-                      builder_image_tag: 24.1.0.0-Final-java23-arm64
+                      builder_image_tag: 24.1.1.0-Final-java23-arm64
         name: Application Build for ${{ matrix.arch }}
         runs-on: ubuntu-latest
         steps:

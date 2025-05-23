@@ -1,0 +1,21 @@
+name: test
+on:
+  workflow_dispatch: {}
+
+jobs:
+    test:
+        name: test
+        runs-on: ubuntu-latest
+        steps:
+            - run: |
+                echo "amd"
+                sha_amd64=$(docker manifest inspect quay.io/heubeck/examiner:1.13.14-amd64 | jq -r '.config.digest')
+
+                echo "arm"
+                sha_arm64=$(docker manifest inspect quay.io/heubeck/examiner:1.13.14-arm64 | jq -r '.config.digest')
+
+                docker manifest create "quay.io/heubeck/examiner:1.13.14" \
+                      "quay.io/heubeck/examiner@${sha_amd64}" \
+                      "quay.io/heubeck/examiner@${sha_arm64}"
+
+                docker manifest push "quay.io/heubeck/examiner:1.13.14" "docker://quay.io/heubeck/examiner:1.13.14"

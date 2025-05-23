@@ -1,5 +1,8 @@
 name: Application build and test
-on: push
+on:
+    push:
+        paths-ignore:
+            - ".github/workflows/test.yaml"
 env:
     java_version: '21'
     mvn_parameter: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp'

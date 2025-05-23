@@ -1,7 +1,7 @@
 name: Application build and test
 on: push
 env:
-    java_version: '23'
+    java_version: '21'
     mvn_parameter: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp'
     image_name: quay.io/heubeck/examiner
     builder_image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image
@@ -12,9 +12,9 @@ jobs:
             matrix:
                 include:
                     - arch: amd64
-                      builder_image_tag: 24.1.1.0-Final-java23-amd64
+                      builder_image_tag: 24.2.1.0-Final-java24-amd64
                     - arch: arm64
-                      builder_image_tag: 24.1.1.0-Final-java23-arm64
+                      builder_image_tag: 24.2.1.0-Final-java24-arm64
         name: Application Build for ${{ matrix.arch }}
         runs-on: ubuntu-latest
         steps:

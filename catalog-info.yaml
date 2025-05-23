@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: examiner
+  title: examiner
+  description: "Just another K8s test-app"
+  annotations:
+    github.com/project-slug: heubeck/examiner # https://backstage.io/docs/features/software-catalog/well-known-annotations/#githubcomproject-slug
+spec:
+  type: service
+  lifecycle: production
+  owner: heubeck

@@ -4,8 +4,8 @@ on:
         paths-ignore:
             - ".github/workflows/test.yaml"
 env:
-    java_version: '21'
-    mvn_parameter: '-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp'
+    java_version: "21"
+    mvn_parameter: "-B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -ntp"
     image_name: quay.io/heubeck/examiner
     builder_image: quay.io/quarkus/ubi-quarkus-mandrel-builder-image
     BUILDX_NO_DEFAULT_ATTESTATIONS: 1
@@ -15,20 +15,20 @@ jobs:
             matrix:
                 include:
                     - arch: amd64
-                      builder_image_tag: 24.2.1.0-Final-java24-amd64
+                      builder_image_tag: 24.2.2.0-Final-java24-amd64
                     - arch: arm64
-                      builder_image_tag: 24.2.1.0-Final-java24-arm64
+                      builder_image_tag: 24.2.2.0-Final-java24-arm64
         name: Application Build for ${{ matrix.arch }}
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Code
-              uses: actions/checkout@v4
+              uses: actions/checkout@v5
 
             - name: Setup Java
               uses: actions/setup-java@v4
               with:
-                  java-version: '${{ env.java_version }}'
-                  distribution: 'temurin'
+                  java-version: "${{ env.java_version }}"
+                  distribution: "temurin"
 
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v3
@@ -36,16 +36,16 @@ jobs:
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
               with:
-                platforms: linux/${{ matrix.arch }}
+                  platforms: linux/${{ matrix.arch }}
 
             - name: Application Build and Test
               env:
-                QUARKUS_CONTAINER_IMAGE_BUILD: 'true'
-                QUARKUS_CONTAINER_IMAGE_BUILDER: 'docker'
-                QUARKUS_NATIVE_CONTAINER_RUNTIME_OPTIONS: '--platform=linux/${{ matrix.arch }}'
-                QUARKUS_BUILDPACK_NATIVE_BUILDER_IMAGE: '${{ env.builder_image }}:${{ matrix.builder_image_tag }}'
-                QUARKUS_DOCKER_BUILDX_PLATFORM: 'linux/${{ matrix.arch }}'
-                NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+                  QUARKUS_CONTAINER_IMAGE_BUILD: "true"
+                  QUARKUS_CONTAINER_IMAGE_BUILDER: "docker"
+                  QUARKUS_NATIVE_CONTAINER_RUNTIME_OPTIONS: "--platform=linux/${{ matrix.arch }}"
+                  QUARKUS_BUILDPACK_NATIVE_BUILDER_IMAGE: "${{ env.builder_image }}:${{ matrix.builder_image_tag }}"
+                  QUARKUS_DOCKER_BUILDX_PLATFORM: "linux/${{ matrix.arch }}"
+                  NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
               run: |
                   skip_tests=""
                   # cannot exec arm binary during native tests on non-arm64 platform.
@@ -87,8 +87,8 @@ jobs:
             - name: Setup Java
               uses: actions/setup-java@v4
               with:
-                  java-version: '${{ env.java_version }}'
-                  distribution: 'temurin'
+                  java-version: "${{ env.java_version }}"
+                  distribution: "temurin"
 
             - name: Determine version
               run: |

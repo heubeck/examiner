@@ -54,7 +54,7 @@ jobs:
                   fi
 
                   mvn ${{ env.mvn_parameter }} $skip_tests clean verify -Pnative
-                  VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
+                  VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:3.5.1:evaluate -Dexpression=project.version -q -DforceStdout)
                   echo VERSION="$VERSION" >> $GITHUB_ENV
 
             - name: Login to quay.io

@@ -17,7 +17,7 @@
 
     <groupId>io.github.heubeck</groupId>
     <artifactId>examiner</artifactId>
-    <version>1.14.7</version>
+    <version>1.14.8</version>
 
     <properties>
         <compiler-plugin.version>3.14.1</compiler-plugin.version>

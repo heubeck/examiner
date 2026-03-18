@@ -15,6 +15,7 @@
 package io.github.heubeck
 
 import io.quarkus.logging.Log
+import io.quarkus.runtime.annotations.StaticInitSafe
 import io.vertx.core.http.HttpServerRequest
 import java.nio.charset.StandardCharsets
 import jakarta.ws.rs.container.ContainerRequestContext
@@ -28,8 +29,11 @@ import org.jetbrains.kotlin.util.suffixIfNot
 
 @Provider
 class Logger(
+    @StaticInitSafe
     @ConfigProperty(name = "log-methods") methods: String,
-    @ConfigProperty(name = "log-headers") headers: String,
+    @StaticInitSafe
+    @ConfigProperty(name = "log-headers")
+    headers: String,
     @Context val request: HttpServerRequest
 ) : ContainerRequestFilter {
 
